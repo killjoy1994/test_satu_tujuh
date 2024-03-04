@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css'
 import AgentList from './components/AgentList';
 import Sidebar from './components/Sidebar';
 import { data } from './data';
+import AgentModal from './components/AgentModal';
 
 function App() {
   const [agents, setAgents] = useState(data);
+  const [agent, setAgent] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [activeRole, setActiveRole] = useState("All roles");
+  const [searchValue, setSearchValue] = useState("");
 
   const getRoles = data.map(data => {
     return data.role
@@ -13,15 +18,63 @@ function App() {
 
   const getDistinctRoles = [...new Set(getRoles)];
 
-  console.log(getDistinctRoles);
+  const onAgentClick = (data) => {
+    console.log("DATA: ", data);
+    const getAgent = [...agents].find(agent => {
+      return agent.displayName == data;
+    })
+    setAgent(getAgent);
+  }
+
+  // console.log("ACTIVE ROLE: ", activeRole);
+  console.log(searchValue);
+
+  useEffect(() => {
+    if (agent) {
+      setOpen(true)
+    }
+  },
+    [agent]),
+
+    useEffect(() => {
+      if (open == false) {
+        setAgent(null);
+      }
+    }, [open])
+
+  useEffect(() => {
+    if (activeRole !== "All roles") {
+      const filtered = data.filter(agent => {
+        return agent.role == activeRole
+      })
+      setAgents(filtered)
+    } else {
+      setAgents(data);
+    }
+  }, [activeRole])
+
+  useEffect(() => {
+    if (searchValue !== "") {
+      const filtered = data.filter(agent => {
+        return agent.displayName.toLowerCase().includes(searchValue.toLowerCase());
+      })
+      setAgents(filtered);
+      setActiveRole("All roles");
+    } else {
+      setAgents(data);
+    }
+  }, [searchValue])
 
   return (
-    <div className='min-h-[100vh] bg-black'>
-      <div className='flex w-full h-[100vh]'>
-        <Sidebar roles={getDistinctRoles} />
-        <div className='bg-slate-200 w-8/12'>
-          <AgentList agents={agents}/>
+    <div className='bg-slate-700 pb-16 app'>
+      <div className='w-full'>
+        <Sidebar roles={getDistinctRoles} activeRole={activeRole} setActiveRole={setActiveRole} setSearchValue={setSearchValue} />
+        <div className='px-10 sm:ml-[30vw]' w-full>
+          {searchValue && <div className='pt-8'><p className='text-white text-lg font-semibold'>Results for {searchValue}</p></div>}
+          {(searchValue && agents.length == 0) && <div><p className='text-white font-semibold text-2xl'>No data for "{searchValue}"</p></div>}
+          <AgentList agents={agents} onAgentClick={onAgentClick} setOpenModal={setOpen} />
         </div>
+        <AgentModal open={open} setOpen={setOpen} agent={agent} />
       </div>
     </div>
   )
