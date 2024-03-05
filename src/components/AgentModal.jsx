@@ -8,7 +8,7 @@ export default function AgentModal({ open, setOpen, agent }) {
 
     const cancelButtonRef = useRef(null)
 
-    console.log(agent);
+    // console.log(agent);
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -55,8 +55,8 @@ export default function AgentModal({ open, setOpen, agent }) {
                                     </div>
                                     <div className='w-7/12 mt-4'>
                                         <div>
-                                            {agent?.abilities.map(ability => {
-                                                return <div className='mb-9 bg-slate-600 p-3'>
+                                            {agent?.abilities.map((ability, idx) => {
+                                                return <div key={idx} className='mb-9 bg-slate-600 p-3'>
                                                     <div className='flex'>
                                                         <img src={ability.displayIcon} width={40} alt="" />
                                                         <div className='ml-4'>

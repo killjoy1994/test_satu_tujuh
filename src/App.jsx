@@ -48,6 +48,7 @@ function App() {
         return agent.role == activeRole
       })
       setAgents(filtered)
+      setSearchValue("");
     } else {
       setAgents(data);
     }
@@ -77,11 +78,12 @@ function App() {
     <div className='bg-slate-700 pb-16 app'>
       <div className='w-full'>
         <Sidebar roles={getDistinctRoles} activeRole={activeRole} setActiveRole={setActiveRole} setSearchValue={setSearchValue} />
-        <div className='px-10 sm:ml-[30vw]' w-full>
+        <div className='px-10 sm:ml-[30vw]'>
           {searchValue && <div className='pt-8'><div>
             <p className='text-white text-lg font-semibold'>Results for "{searchValue}"</p>
             <span onClick={() => {
               setAgents(data)
+              setActiveRole("All roles");
               setSearchValue("");
             }} className='bg-red-500 p-1 rounded-sm hover:brightness-95 text-semibold text-white my-3 block max-w-[130px] text-center cursor-pointer'>Clear Search</span>
             </div></div>}
