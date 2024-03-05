@@ -34,13 +34,13 @@ function App() {
       setOpen(true)
     }
   },
-    [agent]),
+    [agent]);
 
-    useEffect(() => {
-      if (open == false) {
-        setAgent(null);
-      }
-    }, [open])
+  useEffect(() => {
+    if (open == false) {
+      setAgent(null);
+    }
+  }, [open])
 
   useEffect(() => {
     if (activeRole !== "All roles") {
@@ -55,11 +55,19 @@ function App() {
 
   useEffect(() => {
     if (searchValue !== "") {
-      const filtered = data.filter(agent => {
+      let filtered1;
+      if (activeRole != "All roles") {
+        filtered1 = data.filter(agent => {
+          return agent.role == activeRole
+        });
+      } else {
+        filtered1 = data;
+      }
+      const filtered2 = filtered1.filter(agent => {
         return agent.displayName.toLowerCase().includes(searchValue.toLowerCase());
       })
-      setAgents(filtered);
-      setActiveRole("All roles");
+      setAgents(filtered2);
+      // setActiveRole("All roles");
     } else {
       setAgents(data);
     }
@@ -70,7 +78,13 @@ function App() {
       <div className='w-full'>
         <Sidebar roles={getDistinctRoles} activeRole={activeRole} setActiveRole={setActiveRole} setSearchValue={setSearchValue} />
         <div className='px-10 sm:ml-[30vw]' w-full>
-          {searchValue && <div className='pt-8'><p className='text-white text-lg font-semibold'>Results for {searchValue}</p></div>}
+          {searchValue && <div className='pt-8'><div>
+            <p className='text-white text-lg font-semibold'>Results for "{searchValue}"</p>
+            <span onClick={() => {
+              setAgents(data)
+              setSearchValue("");
+            }} className='bg-red-500 p-1 rounded-sm hover:brightness-95 text-semibold text-white my-3 block max-w-[130px] text-center cursor-pointer'>Clear Search</span>
+            </div></div>}
           {(searchValue && agents.length == 0) && <div><p className='text-white font-semibold text-2xl'>No data for "{searchValue}"</p></div>}
           <AgentList agents={agents} onAgentClick={onAgentClick} setOpenModal={setOpen} />
         </div>

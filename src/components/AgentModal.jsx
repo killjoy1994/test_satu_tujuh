@@ -1,6 +1,7 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import ReactPlayer from 'react-player/youtube'
 
 export default function AgentModal({ open, setOpen, agent }) {
     // const [open, setOpen] = useState(true)
@@ -53,18 +54,32 @@ export default function AgentModal({ open, setOpen, agent }) {
                                         </div>
                                     </div>
                                     <div className='w-7/12 mt-4'>
-                                        {agent?.abilities.map(ability => {
-                                            return <div className='mb-9 bg-slate-600 p-3'>
-                                                <div className='flex'>
-                                                    <img src={ability.displayIcon} width={40} alt="" />
-                                                    <div className='ml-4'>
-                                                        <h5 className='text-red-500 font-bold'>{ability.displayName}</h5>
-                                                        <p className='font-semibold text-white text-[14px]'>Slot: {ability.slot} </p>
-                                                        <p className='font-semibold text-white text-[10px]'>{ability.description}</p>
+                                        <div>
+                                            {agent?.abilities.map(ability => {
+                                                return <div className='mb-9 bg-slate-600 p-3'>
+                                                    <div className='flex'>
+                                                        <img src={ability.displayIcon} width={40} alt="" />
+                                                        <div className='ml-4'>
+                                                            <h5 className='text-red-500 font-bold'>{ability.displayName}</h5>
+                                                            <p className='font-semibold text-white text-[14px]'>Slot: {ability.slot} </p>
+                                                            <p className='font-semibold text-white text-[10px]'>{ability.description}</p>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            })}
+                                            <div className='mt-3'>
+                                                <h4 className='text-white font-semibold mb-2 text-lg'>Agent Demo</h4>
+                                                {/* <iframe width="100%"
+                                                    height="315"
+                                                    src="https://youtu.be/embed/e7VOQ1l20eo"
+                                                    title="Test" >
+                                                </iframe> */}
+                                                <ReactPlayer url={agent?.video} />
                                             </div>
-                                        })}
+                                        </div>
+                                    </div>
+                                    <div>
+
                                     </div>
                                 </div>
                             </Dialog.Panel>
