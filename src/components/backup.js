@@ -43,29 +43,36 @@ function App() {
   }, [open])
 
   useEffect(() => {
-    if (searchValue.length == 0) {
-      if (activeRole !== "All roles") {
-        const filtered = data.filter(agent => {
-          return agent.role == activeRole
-        })
-        setAgents(filtered)
-      } else {
-        setAgents(data);
-      }
+    if (activeRole !== "All roles") {
+      const filtered = data.filter(agent => {
+        return agent.role == activeRole
+      })
+      setAgents(filtered)
+      setSearchValue("");
     } else {
-      if(activeRole == "All roles") {
-        let filtered = data.filter(agent => {
-          return agent.displayName.toLowerCase().includes(searchValue.toLowerCase());
-        })
-        setAgents(filtered);
-      } else {
-        let filtered = agents.filter(agent => {
-          return agent.displayName.toLowerCase().includes(searchValue.toLowerCase());
-        })
-        setAgents(filtered);
-      }
+      setAgents(data);
     }
-  }, [activeRole, searchValue]);
+  }, [activeRole])
+
+  useEffect(() => {
+    if (searchValue !== "") {
+      let filtered1;
+      if (activeRole != "All roles") {
+        filtered1 = data.filter(agent => {
+          return agent.role == activeRole
+        });
+      } else {
+        filtered1 = data;
+      }
+      const filtered2 = filtered1.filter(agent => {
+        return agent.displayName.toLowerCase().includes(searchValue.toLowerCase());
+      })
+      setAgents(filtered2);
+      // setActiveRole("All roles");
+    } else {
+      setAgents(data);
+    }
+  }, [searchValue])
 
   return (
     <div className='bg-slate-700 pb-16 app'>
@@ -76,10 +83,10 @@ function App() {
             <p className='text-white text-lg font-semibold'>Results for "{searchValue}"</p>
             <span onClick={() => {
               setAgents(data)
-              // setActiveRole("All roles");
+              setActiveRole("All roles");
               setSearchValue("");
             }} className='bg-red-500 p-1 rounded-sm hover:brightness-95 text-semibold text-white my-3 block max-w-[130px] text-center cursor-pointer'>Clear Search</span>
-          </div></div>}
+            </div></div>}
           {(searchValue && agents.length == 0) && <div><p className='text-white font-semibold text-2xl'>No data for "{searchValue}"</p></div>}
           <AgentList agents={agents} onAgentClick={onAgentClick} setOpenModal={setOpen} />
         </div>
