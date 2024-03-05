@@ -19,7 +19,7 @@ function App() {
   const getDistinctRoles = [...new Set(getRoles)];
 
   const onAgentClick = (data) => {
-    console.log("DATA: ", data);
+    // console.log("DATA: ", data);
     const getAgent = [...agents].find(agent => {
       return agent.displayName == data;
     })
@@ -27,7 +27,7 @@ function App() {
   }
 
   // console.log("ACTIVE ROLE: ", activeRole);
-  console.log(searchValue);
+  // console.log(searchValue);
 
   useEffect(() => {
     if (agent) {
@@ -53,13 +53,17 @@ function App() {
         setAgents(data);
       }
     } else {
-      if(activeRole == "All roles") {
+      if (activeRole == "All roles") {
+        console.log("ALL roles");
         let filtered = data.filter(agent => {
           return agent.displayName.toLowerCase().includes(searchValue.toLowerCase());
         })
         setAgents(filtered);
       } else {
-        let filtered = agents.filter(agent => {
+        console.log("Not all");
+        let filtered = data.filter(agent => {
+          return agent.role == activeRole
+        }).filter(agent => {
           return agent.displayName.toLowerCase().includes(searchValue.toLowerCase());
         })
         setAgents(filtered);
