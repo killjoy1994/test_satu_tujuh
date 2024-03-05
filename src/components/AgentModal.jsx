@@ -67,15 +67,15 @@ export default function AgentModal({ open, setOpen, agent }) {
                                                     </div>
                                                 </div>
                                             })}
-                                            <div className='mt-3'>
+                                            {/* <div className='mt-3'>
                                                 <h4 className='text-white font-semibold mb-2 text-lg'>Agent Demo</h4>
-                                                {/* <iframe width="100%"
+                                                <iframe width="100%"
                                                     height="315"
                                                     src="https://youtu.be/embed/e7VOQ1l20eo"
                                                     title="Test" >
-                                                </iframe> */}
+                                                </iframe>
                                                 <ReactPlayer url={agent?.video} />
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                     <div>
